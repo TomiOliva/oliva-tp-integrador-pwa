@@ -18,6 +18,10 @@ pnpm-debug.log*
 .env
 .env.*
 
+# Local database/source files
+script_base_de_datos_pwa.sql
+shein-products.csv
+
 # Editor/system files
 .vscode/
 .idea/
