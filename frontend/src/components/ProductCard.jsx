@@ -1,8 +1,7 @@
+import { formatPrice } from '../utils/formatPrice'
+
 export function ProductCard({ product, onSelectProduct }) {
-  const price = product.price.toLocaleString('es-AR', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
+  const price = formatPrice(product.price)
 
   return (
     <article className="product-card">
@@ -13,7 +12,7 @@ export function ProductCard({ product, onSelectProduct }) {
         <p className="product-card__price">
           {product.currency} {price}
         </p>
-        <button type="button" onClick={() => onSelectProduct(product)}>
+        <button type="button" onClick={() => onSelectProduct(product.id)}>
           Ver detalle
         </button>
       </div>

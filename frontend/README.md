@@ -1,20 +1,13 @@
-# E-commerce - Oliva, Tomás - Frontend
-# TP Integrador - Programación Web Avanzada - UAI
+# E-commerce - Frontend
 
-Trabajo Practico Integrador - 
-Primera entrega:
-Mostrar productos en grilla/lista:
-Cada producto debe mostrar: nombre, precio, imagen
-Vista individual: 
-Debe mostrar: nombre, descripción, precio, imagen
-La información de dichos productos puede estar hardcodeada en el frontend.
+Interfaz de e-commerce realizada con React y Vite.
 
 ## Funcionalidades
 
 - Listado de productos en grilla.
 - Cada producto muestra nombre, precio e imagen.
 - Vista individual de producto con nombre, descripcion, precio e imagen.
-- Datos hardcodeados en el frontend con el archivo de shein-products.csv.
+- Consumo de productos desde la API del backend.
 
 ## Instalacion
 
@@ -22,13 +15,20 @@ La información de dichos productos puede estar hardcodeada en el frontend.
 npm install
 ```
 
-## Ejecutar frontend
+## Ejecutar en desarrollo
 
 ```bash
-cd frontend
-npm install
 npm run dev
-Luego abrir:
+```
 
-http://localhost:5173
+Por defecto consume la API en:
 
+```text
+http://localhost:3000
+```
+
+## Build
+
+```bash
+npm run build
+```

@@ -1,8 +1,7 @@
+import { formatPrice } from '../utils/formatPrice'
+
 export function ProductDetail({ product, onBack }) {
-  const price = product.price.toLocaleString('es-AR', {
-    minimumFractionDigits: 2,
-    maximumFractionDigits: 2,
-  })
+  const price = formatPrice(product.price)
 
   return (
     <section className="product-detail">

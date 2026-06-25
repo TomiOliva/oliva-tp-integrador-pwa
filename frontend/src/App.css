@@ -30,6 +30,16 @@
   color: #4b5563;
 }
 
+.status-message {
+  margin: 24px 0;
+  color: #4b5563;
+  font-weight: 700;
+}
+
+.status-message--error {
+  color: #b91c1c;
+}
+
 .section-heading {
   display: flex;
   align-items: end;
