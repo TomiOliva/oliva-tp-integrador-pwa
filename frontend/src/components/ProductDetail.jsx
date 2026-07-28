@@ -1,6 +1,7 @@
 import { formatPrice } from '../utils/formatPrice'
+import { handleImageError } from '../utils/imageFallback'
 
-export function ProductDetail({ product, onBack }) {
+export function ProductDetail({ product, onBack, onAddToCart }) {
   const price = formatPrice(product.price)
 
   return (
@@ -10,7 +11,12 @@ export function ProductDetail({ product, onBack }) {
       </button>
 
       <div className="product-detail__content">
-        <img className="product-detail__image" src={product.image} alt={product.name} />
+        <img
+          className="product-detail__image"
+          src={product.image}
+          alt={product.name}
+          onError={handleImageError}
+        />
 
         <div className="product-detail__info">
           <p className="eyebrow">{product.category}</p>
@@ -19,6 +25,13 @@ export function ProductDetail({ product, onBack }) {
           <p className="product-detail__price">
             {product.currency} {price}
           </p>
+          <button
+            className="detail-cart-button"
+            type="button"
+            onClick={() => onAddToCart(product)}
+          >
+            Agregar al carrito
+          </button>
         </div>
       </div>
     </section>

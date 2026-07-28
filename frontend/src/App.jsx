@@ -1,81 +1,79 @@
-import { useEffect, useState } from 'react'
-import { getProductById, getProducts } from './api/productApi'
+import { Cart } from './components/Cart'
 import { ProductDetail } from './components/ProductDetail'
 import { ProductList } from './components/ProductList'
+import { useCart } from './hooks/useCart'
+import { useProducts } from './hooks/useProducts'
 import './App.css'
 
 function App() {
-  const [products, setProducts] = useState([])
-  const [selectedProductId, setSelectedProductId] = useState(null)
-  const [selectedProduct, setSelectedProduct] = useState(null)
-  const [loadingProducts, setLoadingProducts] = useState(true)
-  const [loadingDetail, setLoadingDetail] = useState(false)
-  const [error, setError] = useState('')
-
-  useEffect(() => {
-    async function loadProducts() {
-      try {
-        const productsFromApi = await getProducts()
-        setProducts(productsFromApi)
-      } catch (apiError) {
-        setError(apiError.message)
-      } finally {
-        setLoadingProducts(false)
-      }
-    }
-
-    loadProducts()
-  }, [])
-
-  useEffect(() => {
-    if (!selectedProductId) {
-      return
-    }
-
-    async function loadProductDetail() {
-      try {
-        setLoadingDetail(true)
-        const productFromApi = await getProductById(selectedProductId)
-        setSelectedProduct(productFromApi)
-      } catch (apiError) {
-        setError(apiError.message)
-      } finally {
-        setLoadingDetail(false)
-      }
-    }
-
-    loadProductDetail()
-  }, [selectedProductId])
-
-  const selectProduct = (productId) => {
-    setError('')
-    setSelectedProduct(null)
-    setSelectedProductId(productId)
-  }
-
-  const showList = () => {
-    setSelectedProduct(null)
-    setSelectedProductId(null)
-  }
+  const cart = useCart()
+  const {
+    products,
+    categories,
+    page,
+    categoryId,
+    sortValue,
+    totalProducts,
+    totalPages,
+    pageNumbers,
+    hasPreviousPage,
+    hasNextPage,
+    selectedProductId,
+    selectedProduct,
+    loadingProducts,
+    loadingDetail,
+    error,
+    selectProduct,
+    showList,
+    goToPreviousPage,
+    goToNextPage,
+    goToPage,
+    changeCategory,
+    changeSort,
+  } = useProducts()
 
   return (
     <main className="app">
       <header className="app-header">
         <p className="eyebrow">E-commerce</p>
         <h1>Tienda Online - PWA - Tomas Oliva</h1>
-        <p className="intro">TP PWA - Entrega nro. 2</p>
+        <p className="intro">TP PWA - Entrega final</p>
       </header>
 
       {error && <p className="status-message status-message--error">{error}</p>}
+
+      <Cart cart={cart} />
 
       {loadingProducts ? (
         <p className="status-message">Cargando productos...</p>
       ) : selectedProductId && loadingDetail ? (
         <p className="status-message">Cargando producto...</p>
       ) : selectedProduct ? (
-        <ProductDetail product={selectedProduct} onBack={showList} />
+        <ProductDetail
+          product={selectedProduct}
+          onBack={showList}
+          onAddToCart={cart.addProduct}
+        />
       ) : (
-        <ProductList products={products} onSelectProduct={selectProduct} />
+        <ProductList
+          products={products}
+          categories={categories}
+          page={page}
+          categoryId={categoryId}
+          sortValue={sortValue}
+          totalProducts={totalProducts}
+          totalPages={totalPages}
+          pageNumbers={pageNumbers}
+          hasPreviousPage={hasPreviousPage}
+          hasNextPage={hasNextPage}
+          onSelectProduct={selectProduct}
+          onAddToCart={cart.addProduct}
+          onPreviousPage={goToPreviousPage}
+          onNextPage={goToNextPage}
+          onGoToPage={goToPage}
+          onChangeCategory={changeCategory}
+          onChangeSort={changeSort}
+        />
       )}
     </main>
   )
