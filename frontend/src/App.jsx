@@ -1,3 +1,4 @@
+import { useState } from 'react'
 import { Cart } from './components/Cart'
 import { ProductDetail } from './components/ProductDetail'
 import { ProductList } from './components/ProductList'
@@ -7,6 +8,7 @@ import { useProducts } from './hooks/useProducts'
 import './App.css'
 
 function App() {
+  const [isCartOpen, setIsCartOpen] = useState(false)
   const cart = useCart()
   const {
     products,
@@ -37,14 +39,40 @@ function App() {
   return (
     <main className="app">
       <header className="app-header">
-        <p className="eyebrow">E-commerce</p>
-        <h1>Tienda Online - PWA - Tomas Oliva</h1>
-        <p className="intro">TP PWA - Entrega final</p>
+        <div>
+          <p className="eyebrow">E-commerce</p>
+          <h1>Tienda Online - PWA - Tomas Oliva</h1>
+          <p className="intro">TP PWA - Entrega final</p>
+        </div>
+
+        <button
+          className="cart-open-button"
+          type="button"
+          onClick={() => setIsCartOpen(true)}
+        >
+          <span className="cart-open-button__icon" aria-hidden="true">🛒</span>
+          Carrito
+          {cart.itemCount > 0 && (
+            <span className="cart-open-button__badge">{cart.itemCount}</span>
+          )}
+        </button>
       </header>
 
       {error && <p className="status-message status-message--error">{error}</p>}
 
-      <Cart cart={cart} />
+      {isCartOpen && (
+        <div className="cart-modal">
+          <button
+            className="cart-backdrop"
+            type="button"
+            aria-label="Cerrar carrito"
+            onClick={() => setIsCartOpen(false)}
+          />
+          <aside className="cart-drawer" aria-label="Carrito de compras">
+            <Cart cart={cart} onClose={() => setIsCartOpen(false)} />
+          </aside>
+        </div>
+      )}
 
       <Toast
         notification={cart.notification}

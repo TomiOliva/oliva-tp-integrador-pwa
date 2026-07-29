@@ -98,6 +98,22 @@ export function CartProvider({ children }) {
     )
   }
 
+  const clearCart = () => {
+    setItems([])
+    setNotification({
+      message: 'Carrito vaciado',
+      type: 'info',
+    })
+  }
+
+  const checkout = () => {
+    setItems([])
+    setNotification({
+      message: 'Compra realizada exitosamente',
+      type: 'success',
+    })
+  }
+
   const itemCount = items.reduce((total, item) => total + item.quantity, 0)
   const total = items.reduce(
     (amount, item) => amount + item.product.price * item.quantity,
@@ -114,6 +130,8 @@ export function CartProvider({ children }) {
     addProduct,
     removeProduct,
     updateQuantity,
+    clearCart,
+    checkout,
     clearNotification: () => setNotification(null),
   }
 
