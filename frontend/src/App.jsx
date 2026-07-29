@@ -1,6 +1,7 @@
 import { Cart } from './components/Cart'
 import { ProductDetail } from './components/ProductDetail'
 import { ProductList } from './components/ProductList'
+import { Toast } from './components/Toast'
 import { useCart } from './hooks/useCart'
 import { useProducts } from './hooks/useProducts'
 import './App.css'
@@ -30,6 +31,7 @@ function App() {
     goToPage,
     changeCategory,
     changeSort,
+    clearFilters,
   } = useProducts()
 
   return (
@@ -43,6 +45,11 @@ function App() {
       {error && <p className="status-message status-message--error">{error}</p>}
 
       <Cart cart={cart} />
+
+      <Toast
+        notification={cart.notification}
+        onClose={cart.clearNotification}
+      />
 
       {loadingProducts ? (
         <p className="status-message">Cargando productos...</p>
@@ -73,6 +80,7 @@ function App() {
           onGoToPage={goToPage}
           onChangeCategory={changeCategory}
           onChangeSort={changeSort}
+          onClearFilters={clearFilters}
         />
       )}
     </main>

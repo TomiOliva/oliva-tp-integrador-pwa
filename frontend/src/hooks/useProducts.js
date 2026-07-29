@@ -116,6 +116,12 @@ export function useProducts() {
     setPage(1)
   }
 
+  const clearFilters = () => {
+    setCategoryId('')
+    setSortValue('id-asc')
+    setPage(1)
+  }
+
   const pageRangeStart = Math.max(
     Math.min(page - 2, pagination.totalPages - 5),
     1,
@@ -149,5 +155,6 @@ export function useProducts() {
     goToPage,
     changeCategory,
     changeSort,
+    clearFilters,
   }
 }

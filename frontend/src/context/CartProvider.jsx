@@ -29,10 +29,23 @@ function getCartProduct(product) {
 
 export function CartProvider({ children }) {
   const [items, setItems] = useState(getInitialCart)
+  const [notification, setNotification] = useState(null)
 
   useEffect(() => {
     localStorage.setItem(CART_STORAGE_KEY, JSON.stringify(items))
   }, [items])
+
+  useEffect(() => {
+    if (!notification) {
+      return undefined
+    }
+
+    const timeoutId = window.setTimeout(() => {
+      setNotification(null)
+    }, 3000)
+
+    return () => window.clearTimeout(timeoutId)
+  }, [notification])
 
   const addProduct = (product) => {
     setItems((currentItems) => {
@@ -54,12 +67,22 @@ export function CartProvider({ children }) {
         },
       ]
     })
+
+    setNotification({
+      message: 'Producto agregado exitosamente',
+      type: 'success',
+    })
   }
 
   const removeProduct = (productId) => {
     setItems((currentItems) =>
       currentItems.filter((item) => item.product.id !== productId),
     )
+
+    setNotification({
+      message: 'Producto eliminado del carrito',
+      type: 'info',
+    })
   }
 
   const updateQuantity = (productId, quantity) => {
@@ -87,9 +110,11 @@ export function CartProvider({ children }) {
     itemCount,
     total,
     currency,
+    notification,
     addProduct,
     removeProduct,
     updateQuantity,
+    clearNotification: () => setNotification(null),
   }
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>

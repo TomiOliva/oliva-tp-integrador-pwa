@@ -18,7 +18,10 @@ export function ProductList({
   onGoToPage,
   onChangeCategory,
   onChangeSort,
+  onClearFilters,
 }) {
+  const hasActiveFilters = categoryId !== '' || sortValue !== 'id-asc'
+
   return (
     <section className="products-section">
       <div className="section-heading">
@@ -57,6 +60,16 @@ export function ProductList({
             <option value="price-desc">Mayor precio</option>
           </select>
         </label>
+
+        {hasActiveFilters && (
+          <button
+            className="clear-filters-button"
+            type="button"
+            onClick={onClearFilters}
+          >
+            Limpiar filtros
+          </button>
+        )}
       </div>
 
       <div className="products-grid">

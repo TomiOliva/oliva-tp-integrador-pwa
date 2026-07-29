@@ -13,18 +13,17 @@ const productSelect = `
   INNER JOIN categorias c ON p.categoria_id = c.id
 `
 
-function getWhereClause({ categoryId }) {
-  const values = []
-  const conditions = []
-
+function getWhereClause(categoryId) {
   if (categoryId) {
-    conditions.push('p.categoria_id = ?')
-    values.push(categoryId)
+    return {
+      clause: 'WHERE p.categoria_id = ?',
+      values: [categoryId],
+    }
   }
 
   return {
-    clause: conditions.length ? `WHERE ${conditions.join(' AND ')}` : '',
-    values,
+    clause: '',
+    values: [],
   }
 }
 
@@ -40,7 +39,7 @@ function getOrderClause({ sortBy, sortDirection }) {
 }
 
 async function findAll({ limit, offset, categoryId, sortBy, sortDirection }) {
-  const where = getWhereClause({ categoryId })
+  const where = getWhereClause(categoryId)
   const values = [...where.values]
   let query = `
     ${productSelect}
@@ -64,7 +63,7 @@ async function findAll({ limit, offset, categoryId, sortBy, sortDirection }) {
 }
 
 async function countAll({ categoryId }) {
-  const where = getWhereClause({ categoryId })
+  const where = getWhereClause(categoryId)
   const [rows] = await pool.query(
     `
       SELECT COUNT(*) AS total
